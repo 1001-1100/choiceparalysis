@@ -15,6 +15,7 @@ class AddScreen extends Component {
         this.state = {
             cards: this.props.cards,
             choiceValue: '',
+            choiceDescription: '',
         };
     }
 
@@ -22,17 +23,23 @@ class AddScreen extends Component {
         if(this.state.choiceValue.trim() !== ''){
             const cards = this.state.cards
             const card = {
-                key: this.state.choiceValue,
+                key: this.state.choiceValue + this.state.description,
                 title: this.state.choiceValue,
+                description: this.state.choiceDescription,
                 chosen: true,
             }
             cards.push(card)
             this.setState({cards})
+            localStorage.setItem('cards',JSON.stringify(cards))
         }
     }
 
     changeChoice = (e) => {
         this.setState({choiceValue: e.target.value})
+    }
+
+    changeChoiceDesc = (e) => {
+        this.setState({choiceDescription: e.target.value})
     }
 
     makeChoice = (e) => {
@@ -42,15 +49,8 @@ class AddScreen extends Component {
     removeChoice = (i) => {
         const cards = this.state.cards;
         cards.splice(i, 1);
-        const chooseCards = [];
-        var count = 0;
-        cards.map(card => {
-            if(count < 3){
-                chooseCards.push(card);
-                count += 1;
-            }
-        })
-        this.setState({cards,chooseCards})
+        this.setState({cards})
+        localStorage.setItem('cards',JSON.stringify(cards))
     }
 
 
@@ -64,6 +64,7 @@ class AddScreen extends Component {
                     </center>
                 </Typography>
                 <TextField onChange={this.changeChoice} value={this.choiceValue} id="outlined-basic" label="Choice" variant="outlined"/>
+                <TextField onChange={this.changeChoiceDesc} value={this.choiceDescription} id="outlined-basic" label="Description" variant="outlined"/>
                 <Box my={3}>
                     <Button onClick={this.addChoice} variant="contained" color="primary">
                         Add Choice
@@ -83,7 +84,7 @@ class AddScreen extends Component {
                     </Link>
                 </Box>
                 {this.state.cards.map((card, index) => ( 
-                    <SimpleCard key={card.key} title={card.title} index={index} removeChoice={this.removeChoice}/>
+                    <SimpleCard key={card.key} title={card.title} description={card.description} index={index} removeChoice={this.removeChoice}/>
                 ))}
                 <Fact fact={this.props.fact} />
             </Box>
