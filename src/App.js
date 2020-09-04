@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AddScreen from './AddScreen';
 import ChooseScreen from './ChooseScreen';
 import RandomScreen from './RandomScreen';
+import SnapScreen from './SnapScreen';
 import axios from 'axios';
 
 class App extends Component {
@@ -50,13 +51,22 @@ class App extends Component {
     )
   }
 
+  snapScreen = () => {
+    return (
+      <Fragment>
+        <SnapScreen cards={this.state.cards} fact={this.state.fact}/>
+      </Fragment>
+    )
+  }
+
   render(){
     return (
       <Router>
         <Switch>
           <Route exact path='/' render={this.addScreen} /> 
           <Route exact path='/choose' render={this.chooseScreen} /> 
-          <Route exact path='/random' render={this.randomScreen} /> 
+          <Route exact path='/wheel' render={this.randomScreen} /> 
+          <Route exact path='/snap' render={this.snapScreen} /> 
         </Switch>
       </Router>
     );

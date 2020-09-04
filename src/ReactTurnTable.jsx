@@ -56,11 +56,13 @@ export default class ReactTurntable extends PureComponent {
     speed: PropTypes.number,
     duration: PropTypes.number,
     onComplete: PropTypes.func,
+    onSpin: PropTypes.func,
     onStart: PropTypes.func,
     fontVertical: PropTypes.bool,
     fontStyle: PropTypes.object,
     hiddenButton: PropTypes.bool
   }
+
   render() {
     const {
       clickText,
@@ -100,6 +102,8 @@ export default class ReactTurntable extends PureComponent {
   }
   rotateTurntable = () => {
     this.rotateTime += 20
+    const prize = this.getSelectedPrize()
+    this.props.onSpin(prize)
     if (this.rotateTime >= this.rotateAllTime) {
       this.setState({ isRotate: false })
       this.noticePrize()
@@ -185,6 +189,8 @@ export default class ReactTurntable extends PureComponent {
       ctx.closePath()
       ctx.restore()
     }
+    const prize = this.getSelectedPrize()
+    this.props.onSpin(prize)
   }
   destroyContext() {
     window.cancelAnimationFrame(this.animateId)
